@@ -21,8 +21,8 @@ Rails.application.configure do
       :address => "smtp.gmail.com",
       :port => 587,
       :domain => "railscast.com",
-      :user_name => "bharatupgraded@gmail.com",
-      :password => "9248633867",
+      :user_name => "railsdevise",
+      :password => "archu123",
       :authentication => "plain",
       :enable_starttls_auto => true
     }
