@@ -16,23 +16,26 @@
         <td><%= blog.title %></td>
         <td><%= blog.description %></td>
         <td><%= blog.content %></td>
-        <td><%=  link_to_modal "Share", "#demo-form", :class=>"button" %></td>
-
+        <td><%= link_to_modal "Share", "#demo-form", :class=>"button shareBtn", data: {id: blog.id} %></td>
       </tr>
-      <%= form_tag(deliver_mail_blogs_path) do %>
-        <div id="demo-form" class="demo-description" style="display: none; ">
-          <p> send this blog link to multiple email address
-              <%= hidden_field_tag "blog_id", blog.id %>
-              <%= text_area_tag "emails"%>
-            <%= link_to 'Cancel', blogs_path, :rel => "modal:close" %>
-          </p>
-          <p><%= submit_tag "Send"%></p>
-        </div>
-      <% end -%>
     <% end %>
   </tbody>
 </table>
-
+<%= form_tag(deliver_mail_blogs_path) do %> 
+  <div id="demo-form" class="demo-description" style="display: none; ">
+    <p> send this blog link to multiple email address
+      <%= hidden_field_tag "blog_id", "", class: 'formBlogId' %>
+      <%= text_area_tag "emails"%>
+      <%= link_to 'Cancel', blogs_path, :rel => "modal:close" %>
+    </p>
+    <p><%= submit_tag "Send"%></p>
+  </div>
+<% end -%>
 <br>
 
 <%= link_to 'New Blog', new_blog_path %>
+<script>
+  $(".shareBtn").on("click", function(){
+    $(".formBlogId").val(""+ $(this).data("id"));
+  })
+</script>

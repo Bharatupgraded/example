@@ -29,7 +29,7 @@ class BlogsController < ApplicationController
 
     respond_to do |format|
       if @blog.save
-        format.html { redirect_to @blog, notice: 'Blog was successfully created.' }
+        format.html { redirect_to blogs_url, notice: 'Blog was successfully created.' }
         format.json { render :show, status: :created, location: @blog }
       else
         format.html { render :new }
@@ -63,13 +63,12 @@ class BlogsController < ApplicationController
   end
 
   def deliver_mail
-    blog = Blog.select([:id, :password]).where(params[:blog_id])
+    blog = Blog.select([:id, :password]).where(params[:blog_id])   
+    blog = Blog.find(params[:blog_id])
     emails = params[:emails].split(";")
     
     emails.each do |email|
-      # user = User.where(email: email, blog_id: params[:blog_id]).first_or_create
-      user.email = email
-      user.blog_id = blog.id
+      user = User.where(email: email, blog_id: params[:blog_id]).first_or_create
       user.save
       if blog && user.present?
         UserMailer.welcome_email(user, blog).deliver
