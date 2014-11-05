@@ -63,10 +63,9 @@ class BlogsController < ApplicationController
   end
 
   def deliver_mail
-    blog = Blog.select([:id, :password]).where(params[:blog_id])   
+    # blog = Blog.select([:id, :password]).where(params[:blog_id])   
     blog = Blog.find(params[:blog_id])
-    emails = params[:emails].split(";")
-    
+    emails = params[:emails].split(";") 
     emails.each do |email|
       user = User.where(email: email, blog_id: params[:blog_id]).first_or_create
       user.save
@@ -89,7 +88,7 @@ class BlogsController < ApplicationController
     end
 
     def user_authentication
-      unless user = authenticate_with_http_basic { |u, p| User.where(email: u).present? && Blog.where(id: 1, password: p).present?}
+      unless user = authenticate_with_http_basic { |u, p| User.where(email: u).present? && Blog.where(id: params[:id], password: p).present?}
         request_http_basic_authentication
       end
     end

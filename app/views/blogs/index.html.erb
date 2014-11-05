@@ -23,12 +23,12 @@
 </table>
 <%= form_tag(deliver_mail_blogs_path) do %> 
   <div id="demo-form" class="demo-description" style="display: none; ">
-    <p> send this blog link to multiple email address
+    <p> Use (<b>;</b>) for sending this blog link to multiple email address
       <%= hidden_field_tag "blog_id", "", class: 'formBlogId' %>
       <%= text_area_tag "emails"%>
       <%= link_to 'Cancel', blogs_path, :rel => "modal:close" %>
     </p>
-    <p><%= submit_tag "Send"%></p>
+    <p><%= submit_tag "Send", :onclick => 'javascript:checkEmails();'%></p>
   </div>
 <% end -%>
 <br>
@@ -38,4 +38,22 @@
   $(".shareBtn").on("click", function(){
     $(".formBlogId").val(""+ $(this).data("id"));
   })
+
+function checkEmail(email) {
+var regExp = /(^[a-z]([a-z_\.]*)@([a-z_\.]*)([.][a-z]{3})$)|(^[a-z]([a-z_\.]*)@([a-z_\.]*)(\.[a-z]{3})(\.[a-z]{2})*$)/i;
+return regExp.test(email);
+}
+ 
+function checkEmails(){
+    var emails = document.getElementById("emails").value;
+    var emailArray = emails.split(";");
+    for(i = 0; i <= (emailArray.length - 1); i++){
+        if(checkEmail(emailArray[i])){
+            //Do what ever with the email.
+        }else{
+            alert("invalid email: " + emailArray[i]);
+            return false
+        }
+    }
+}
 </script>
